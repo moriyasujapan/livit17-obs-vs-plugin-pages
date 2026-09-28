@@ -259,5 +259,30 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.getElementById('tab-'+t.dataset.t).classList.add('on');
 }));
 </script>
+<style>
+pre{position:relative}
+.copybtn{position:absolute;top:6px;right:6px;font-size:11px;padding:2px 9px;border-radius:6px;border:1px solid rgba(160,160,160,.45);background:rgba(127,127,127,.16);color:inherit;cursor:pointer;opacity:.75}
+.copybtn:hover{opacity:1;background:rgba(127,127,127,.32)}
+</style>
+<script>
+document.querySelectorAll('pre').forEach(pre=>{
+  const lines=pre.innerText.split('\n').map(l=>l.trim()).filter(Boolean);
+  const jp=/[\u3000-\u30ff\u4e00-\u9fff]/;
+  const cmds=lines.filter(l=>l.startsWith('#')||!jp.test(l));
+  if(!cmds.some(l=>!l.startsWith('#')))return;
+  const b=document.createElement('button');
+  b.className='copybtn';b.type='button';b.textContent='コピー';b.title='コマンド行だけをコピーします';
+  b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const text=cmds.join('\n');
+    try{await navigator.clipboard.writeText(text);}catch(err){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+      document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e2){}ta.remove();
+    }
+    b.textContent='✓';setTimeout(()=>b.textContent='コピー',1200);
+  });
+  pre.appendChild(b);
+});
+</script>
 </body>
 </html>
