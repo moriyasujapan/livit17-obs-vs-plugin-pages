@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livit17-obs-vs-plugin マニュアル | 17LIVE VS対応OBSプラグイン</title>
+<meta name="description" content="17LIVE VSを楽にするOBSプラグイン。公式プラグインのログインを共有し、VS招待の受諾制御・ポップアップ・リスナー视角プレビューを提供します。">
+<style>
+  :root{
+    --bg:#0b0d12; --panel:#141824; --panel2:#1b2030; --line:#262c40;
+    --text:#e8ebf4; --muted:#9aa3b8; --accent:#ff3b5c; --accent2:#ff7a9c;
+    --ok:#3ddc84; --warn:#ffb020; --mono:ui-monospace,'SF Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Hiragino Sans','Noto Sans JP',sans-serif;line-height:1.75}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);background:var(--panel2);padding:2px 7px;border-radius:6px;font-size:.88em;border:1px solid var(--line)}
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:22px;padding:12px 26px;
+      background:rgba(11,13,18,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;font-size:17px;letter-spacing:.3px;white-space:nowrap}
+  .logo b{color:var(--accent)}
+  nav .links{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+  nav .links a{color:var(--muted)} nav .links a:hover{color:var(--text);text-decoration:none}
+  .ghbtn{margin-left:auto;border:1px solid var(--line);border-radius:9px;padding:6px 14px;font-size:13px;color:var(--text)!important;background:var(--panel)}
+  /* hero */
+  header{padding:88px 26px 70px;text-align:center;position:relative;overflow:hidden}
+  header::before{content:'';position:absolute;inset:0;
+    background:radial-gradient(700px 340px at 50% -60px,rgba(255,59,92,.22),transparent),
+               radial-gradient(500px 300px at 80% 20%,rgba(88,101,242,.12),transparent)}
+  .badge{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);
+    border-radius:99px;padding:4px 14px;font-size:12.5px;margin-bottom:20px;position:relative}
+  .badge b{color:var(--ok)}
+  h1{font-size:clamp(30px,5vw,52px);font-weight:900;letter-spacing:-.5px;position:relative}
+  h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);max-width:680px;margin:18px auto 30px;position:relative;font-size:16.5px}
+  .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+  .btn{border-radius:11px;padding:12px 26px;font-weight:700;font-size:15px}
+  .btn.p{background:linear-gradient(90deg,var(--accent),#e0233f);color:#fff;box-shadow:0 8px 28px rgba(255,59,92,.35)}
+  .btn.s{background:var(--panel);border:1px solid var(--line);color:var(--text)}
+  main{max-width:1080px;margin:0 auto;padding:10px 26px 90px}
+  section{margin:64px 0}
+  h2{font-size:25px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:11px}
+  h2 .no{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:none;
+    border-radius:9px;background:linear-gradient(135deg,var(--accent),#a01030);font-size:15px}
+  .lead{color:var(--muted);margin-bottom:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:22px 24px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .grid .card h3{font-size:16.5px;margin-bottom:8px}
+  .grid .card p{color:var(--muted);font-size:14.5px}
+  .ico{font-size:22px;margin-bottom:10px;display:block}
+  /* tabs */
+  
+  .small{font-size:13px;color:var(--muted);margin-top:8px}
+  .tabs{display:flex;gap:8px;margin-bottom:0}
+  .tab{background:var(--panel);border:1px solid var(--line);border-bottom:none;border-radius:11px 11px 0 0;
+    padding:9px 22px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer}
+  .tab.on{background:var(--panel2);color:var(--text)}
+  .tabbody{display:none;background:var(--panel2);border:1px solid var(--line);border-radius:0 11px 11px 11px;padding:22px 24px}
+  .tabbody.on{display:block}
+  ol.steps{margin-left:20px} ol.steps li{margin:9px 0}
+  pre{background:#0a0c11;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;
+    font-family:var(--mono);font-size:13px;margin:10px 0}
+  /* callouts */
+  .note{border-left:4px solid;border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px}
+  .note.ok{border-color:var(--ok);background:rgba(61,220,132,.07)}
+  .note.warn{border-color:var(--warn);background:rgba(255,176,32,.07)}
+  .note.danger{border-color:var(--accent);background:rgba(255,59,92,.08)}
+  .note b.t{display:block;margin-bottom:3px}
+  figure{margin:26px 0}
+  figure img{width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 16px 50px rgba(0,0,0,.5)}
+  figcaption{color:var(--muted);font-size:13.5px;margin-top:9px;text-align:center}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top}
+  th{background:var(--panel2)}
+  td:first-child{color:var(--accent2);font-weight:600;white-space:nowrap}
+  footer{border-top:1px solid var(--line);padding:28px;text-align:center;color:var(--muted);font-size:13px}
+  .kbd{border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:1px 8px;font-size:12.5px;background:var(--panel2);font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">livit17<b>VS</b> for OBS</div>
+  <div class="links">
+    <a href="#install">インストール</a><a href="#focus">Focus</a><a href="#invite">招待ポップアップ</a>
+    <a href="#preview">プレビュー</a><a href="#audio">音声</a><a href="#trouble">よくある質問</a>
+  </div>
+  <a class="ghbtn" href="https://github.com/moriyasujapan/livit17-obs-vs-plugin">GitHub ↗</a>
+</nav>
+
+<header>
+  <div class="badge">v0.1.3 開発プレビュー ・ <b>3OSビルド済み</b>（macOS実機動作確認✓）</div>
+  <h1>VSは、<span>OBSの中で</span>決める。</h1>
+  <p class="sub">17LIVE公式OBSプラグインのログインをそのまま共有。VS招待をあなたの環境で受け取り、
+  受ける／受けないを自分でコントロール。配信環境はそのままで、リスナーに見えている画面も確認できます。</p>
+  <div class="ctas">
+    <a class="btn p" href="https://github.com/moriyasujapan/livit17-obs-vs-plugin/releases">ダウンロード</a>
+    <a class="btn s" href="#install">インストール方法</a>
+    <a class="btn s" href="#how">仕組みを知る</a>
+  </div>
+</header>
+
+<main>
+
+<section id="how">
+  <h2><span class="no">?</span>何ができるプラグイン？</h2>
+  <p class="lead">既存の17LIVE配信環境（サーバー送出）に追加で入れる、VS支援だけの特化プラグインです。</p>
+  <div class="grid">
+    <div class="card"><span class="ico">🔑</span><h3>ログイン共有</h3><p>公式17LIVEプラグインで一度ログインしていればOK。このプラグインで再ログインは不要です。</p></div>
+    <div class="card"><span class="ico">🎯</span><h3>Focusモード</h3><p>ONにするとVS招待を受けない状態に。放送に集中したいとき一键で切り替え。</p></div>
+    <div class="card"><span class="ico">📥</span><h3>招待ポップアップ</h3><p>VS招待が届くとOBS内に相手名・期限付きの受諾/拒否ダイアログが表示されます。</p></div>
+    <div class="card"><span class="ico">📺</span><h3>リスナー视角プレビュー</h3><p>視聴者に見えているVS合成画面をそのまま確認。画面が逆でも即気づけます。</p></div>
+    <div class="card"><span class="ico">🎧</span><h3>相手の音声（任意）</h3><p>イヤホンでのみ聞けるMonitor-Onlyルート。配信音には絶対に乗りません。</p></div>
+    <div class="card"><span class="ico">📡</span><h3>VSへ映像/音声PUSH</h3><p>Dockのワンクリックで仮想カメラ開始。配信中そのものの映像・音声をVS相手に無劣化で送信します。</p></div>
+    <div class="card"><span class="ico">🪟</span><h3>シーン切り替え不要</h3><p>VS中の画面演出は既存のOBS/サーバー合成が担当。プラグインは操作と確認だけ。</p></div>
+  </div>
+</section>
+
+<section id="install">
+  <h2><span class="no">1</span>インストール</h2>
+  <p class="lead">前提：<b>OBS Studio 32以上</b>（<a href="https://obsproject.com/ja/download" target="_blank" rel="noopener">こちらから入手</a>）＋ 公式「17LIVE」OBSプラグイン（<a href="https://jp.17.live/faq/41650/" target="_blank" rel="noopener">ダウンロード・使い方</a>）で一度ログインしたことがあること。</p>
+  <p class="lead">いちばん簡単なのは、<a href="https://github.com/moriyasujapan/livit17-obs-vs-plugin/releases">Releasesページ</a>の<b>各OS用インストーラー</b>をダブルクリックで導入する方法です。</p>
+  <div class="tabs">
+    <div class="tab on" data-t="win">🪟 Windows</div>
+    <div class="tab" data-t="linux">🐧 Linux</div>
+    <div class="tab" data-t="mac">🍎 macOS</div>
+  </div>
+  <div class="tabbody on" id="tab-win">
+    <ol class="steps">
+      <li>OBS Studioを<b>終了</b>します。</li>
+      <li>Releasesページの <code>…-win64.exe</code> をダウンロードしてダブルクリックします。</li>
+      <li>OBSのインストールフォルダ（既定: <code>C:\Program Files\obs-studio</code>）を確認して「インストール」を押します。</li>
+      <li>OBSを起動 → 「新しいプラグインを検出しました」→ <b>OBSをもう一度再起動</b>で読み込み完了</li>
+      <li>メニュー「表示」→「ドック」→「17LIVE VS」でDockが表示されることを確認します。</li>
+    </ol>
+    <pre>アンインストール: Windows設定 → アプリ → livit17-obs-vs-plugin → アンインストール
+手動導入派はZIP版の install.bat でも導入できます（導入先: %APPDATA%\obs-studio\plugins\）</pre>
+  </div>
+  <div class="tabbody" id="tab-linux">
+    <ol class="steps">
+      <li>OBS Studioを<b>終了</b>します。</li>
+      <li>Releasesページの <code>…-linux-amd64.deb</code> をダウンロードします。</li>
+      <li>ターミナルで導入します：
+      <pre>sudo dpkg -i livit17-obs-vs-plugin-*-linux-amd64.deb
+# 「依存関係が足りません」と出たら: sudo apt -f install</pre></li>
+      <li>OBSを起動 → プラグイン検出の案内 → <b>もう一度OBSを再起動</b> → メニュー「表示」→「ドック」→「17LIVE VS」でDockを表示します。</li>
+    </ol>
+    <pre>手動導入派はZIP版: linux/ ディレクトリで sh install.sh（sudo不要・~/.config/obs-studio/plugins/へ）
+アンインストール: sudo apt remove livit17-obs-vs-plugin</pre>
+  </div>
+  <div class="tabbody" id="tab-mac">
+    <ol class="steps">
+      <li>OBS Studioを<b>終了</b>します。</li>
+      <li>Releasesページの ZIP（<code>livit17-obs-vs-plugin-x.x.x.zip</code>）をダウンロードして解凍します。</li>
+      <li>ターミナルで <code>macos/</code> ディレクトリに入り <code>sh install.sh</code> を実行（Gatekeeperのダイアログは出ません）:
+      <pre>cd Downloads/livit17-obs-vs-plugin-*/macos
+sh install.sh</pre></li>
+      <li>OBSを起動 → プラグイン検出 → <b>もう一度OBSを再起動</b> → メニュー「表示」→「ドック」→「17LIVE VS」でDockを表示します。</li>
+    </ol>
+    <pre>install.shが仮想カメラドライバ未登録を検知したときだけ、案内される2行（sudo）を実行してください。
+pkg版（…-macos.pkg）もあります: 導入もアンインストールも1クリックで楽ですが、無署名のため
+初回だけ右クリック→「開く」→「開く」が必要です（macOS実機 OBS 32.0.4 / macOS 26 で動作確認済み）。
+Apple Silicon（M1〜M4）対応。</pre>
+  </div>
+  <div class="note ok"><b class="t">✅ 正常に入ると</b>Dock上部に「セッション: OK（OpenID / room 部屋番号）」と表示されます。ここに「未取得」と出たら次項を確認してください。</div>
+</section>
+
+<section id="focus">
+  <h2><span class="no">2</span>Focusモード（招待を受ける/受けない）</h2>
+  <p class="lead">ライバーさんの意思でVS参加のON/OFFを決められます。</p>
+  <div class="card">
+    <p>「<b>Focus（招待を受けない）</b>」チェック = <b>ON：招待が来ても自動でスキップ</b>（放送に集中）<br>
+    チェック = <b>OFF：招待が来たらポップアップでお知らせ</b> → 受諾/拒否を自分で選べます</p>
+  </div>
+  <div class="note warn"><b class="t">⚠ 開発プレビュー版では</b>現在のv0.1.3はUIプレビュー段階です。受諾ボタンはAPI接続済みではありません（M2で実APIに接続予定）。</div>
+</section>
+
+<section id="invite">
+  <h2 id="push"><span class="no">3</span>OBSの映像・音声をVSへそのままPUSH</h2>
+  <div class="card">
+    <p>VSの相手へ<strong>今OBSで配信している映像と音そのもの</strong>を送ります。カメラで撮り直すのとは違い、配信用の映像を<strong>無劣化でそのまま複製</strong>する仕組みなので、<strong>相手が見る映像＝リスナーが見ている映像</strong>が保証されます。</p>
+    <ol>
+      <li><strong>Dockの「仮想カメラを開始」</strong>を押します（またはOBS「コントロール」→「仮想カメラを開始」）。ボタンが緑になればPUSH中です。<br><small>※「仮想カメラ」はWebカメラのことでなく、OBSの配信画面そのものを出力するOBS標準機能です。</small></li>
+      <li>17LIVEのVS画面にある<strong>カメラ選択で「OBS Virtual Camera」</strong>を選ぶと、OBS画面がそのまま送られます ✓</li>
+      <li><strong>音声も送る場合（任意）</strong>: 無料の仮想オーディオアプリ（Windows: VB-CABLE / macOS: BlackHole）を1回だけ導入すると、OBSの音（声・BGM・ゲーム音のミックス済み）をVS側のマイクとして相手に送れます。手順: OBS「音声の高度な設定」→ 音声モニタ先を仮想ケーブルに → VS側のマイク選択をそのケーブル（CABLE Output / BlackHole）に。</li>
+    </ol>
+    <div class="note warn"><b class="t">🍎 macOSで「仮想カメラシステムプロセスが見つかりませんでした」と出たら（初回1回だけ）</b>
+      OBSをドラッグでインストールした場合、macOS側のカメラドライバ登録が抜けることがあります。<b>ターミナル</b>で次の2行を実行（管理者パスワードを聞かれます）し、<b>ログアウト→ログイン（または再起動）</b>してください:
+      <pre>sudo mkdir -p /Library/CoreMediaIO/Plug-Ins/DAL
+sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library/CoreMediaIO/Plug-Ins/DAL/</pre>
+    </div>
+    <div class="note warn"><b class="t">🎧 ハウリング注意</b>相手の声はイヤホンでのみ聞いてください。スピーカーで再生すると声がマイク経由で相手にループします。</div>
+  </div>
+
+  <h2><span class="no">4</span>招待ポップアップ</h2>
+  <figure>
+    <img src="assets/obs-dock-linux.png" alt="OBS内の17LIVE VS Dock（セッション表示・Focus切替・プレビュー枠・音声切替）">
+    <figcaption>OBS右側に設置される「17LIVE VS」Dock（Linux版の実画面。Windows版も同一UI）</figcaption>
+  </figure>
+  <p>招待が届くと、招待元の名前と残り時間を示すモーダルが表示されます。既定で「拒否」、受諾ボタンのみで承諾します（誤爆防止）。</p>
+</section>
+
+<section id="preview">
+  <h2><span class="no">5</span>リスナー视角プレビュー</h2>
+  <p class="lead">「視聴者に実際に見えているVS画面」をDock内に映します。左右反転・画面落ちの即検知用です。</p>
+  <div class="note"><b class="t">📌 M2実装項目</b>配信開始時にサーバー送出先（視聴者URL）をデコードして表示します。プラグイン側の処理は軽い（デコードのみ）ため配信負荷はほぼ変わりません。</div>
+</section>
+
+<section id="audio">
+  <h2><span class="no">6</span>相手の音声を聞く（イヤホン必須）</h2>
+  <div class="note danger"><b class="t">🎧 配信中にスピーカーで聞かないで！</b>相手の音声をスピーカーで流すと配信にエコー（ハウリング）として乗ってしまいます。</div>
+  <p>プラグインの音声ルートは「<b>Monitor Only（モニターのみ）</b>」設計です。これは：</p>
+  <div class="card" style="margin:14px 0">
+    <p>✅イヤホン（モニター）には相手の声が聞こえる<br>
+    ❌配信中の視聴者にはあなたのスピーカー音が返らない（配信に混ざらない）</p>
+  </div>
+  <p>つまり「イヤホンをしていればOK、スピーカーだとハウリング」という単純なルールです。Dock下部の「相手の音声を聞く」は<b>既定OFF</b>です。</p>
+</section>
+
+<section id="trouble">
+  <h2><span class="no">7</span>よくある質問・トラブル</h2>
+  <table>
+    <tr><th>症状</th><th>対処</th></tr>
+    <tr><td>「セッション: 未取得」と出る</td><td>公式17LIVEプラグインでログインしてください。OBSを一度終了→再起動すると認識します。</td></tr>
+    <tr><td>「仮想カメラシステムプロセスが見つかりませんでした」（macOS）</td><td>上記PUSH節の<b>ターミナル2行</b>を実行し、ログアウト→ログイン（または再起動）してください。OBSのドラッグインストールでたまに起きます。</td></tr>
+    <tr><td>相手に映像が伝わらない</td><td>VS/PK側のカメラ選択がWebcamのままです。<b>「OBS Virtual Camera」</b>を選び、Dock（またはコントロール）で<b>仮想カメラを開始</b>してください。</td></tr>
+    <tr><td>Dockが見当たらない</td><td>OBSメニュー「表示」→「ドック」→「17LIVE VS」にチェックを付けてください（v0.1.1〜）。</td></tr>
+    <tr><td>Dockが消えて戻らない</td><td>OBSを終了し、設定ファイルの <code>DockState=</code> 行を削除してから起動すると復帰します（Windows: <code>%APPDATA%\obs-studio\user.ini</code>、macOS: <code>~/Library/Application Support/obs-studio/user.ini</code>、Linux: <code>~/.config/obs-studio/user.ini</code>）。</td></tr>
+    <tr><td>招待ポップアップが出ない</td><td>FocusがONになっていませんか？OFFにしてください。公式側で招待を受け付けない設定の場合もあります。</td></tr>
+    <tr><td>ハウリングする</td><td>イヤホン利用に切り替えてください。音声切替は既定OFFです。</td></tr>
+    <tr><td>OBS起動時にエラー</td><td>OBSのバージョンを<b>32以上</b>へ更新してください（v0.1.3はOBS 32対応）。公式プラグイン版との競合は今のところ確認されていません（同居動作確認済）。</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="no">%</span>開発者向け</h2>
+  <p class="lead">ビルドはOBSプラグインテンプレート準拠。単一ソースでWindows/Linux両対応。</p>
+  <pre># Linux
+cmake --preset ubuntu-x86_64 &amp;&amp; cmake --build --preset ubuntu-x86_64
+
+# Windows (Visual Studio 2022環境, vcvars64後)
+cmake --preset windows-x64
+cmake --build build_x64 --config Release</pre>
+  <p style="color:var(--muted);font-size:14px">設計や内部仕様はリポジトリの docs/ とコードコメントを参照。ライセンス: GPL-2.0。</p>
+</section>
+
+</main>
+
+<footer>livit17-obs-vs-plugin ・ GPL-2.0 ・ 17LIVE公式ものではありません。配信環境は各自の責任でご利用ください。</footer>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.tabbody').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  document.getElementById('tab-'+t.dataset.t).classList.add('on');
+}));
+</script>
+</body>
+</html>
