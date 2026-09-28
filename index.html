@@ -172,18 +172,18 @@ Apple Silicon（M1〜M4）対応。</pre>
 
 <section id="invite">
   <h2><span class="no">2</span>友だちを誘ってVS開始（ダイレクトPUSH・推奨）</h2>
-  <p class="lead">1対1のフレンドVSを、OBSから直接始めます。相手は17LIVEアプリ/配信画面で招待を受容するだけでOK。<b>4人VSは未対応です（1対1のみ）</b>。</p>
-  <h3>準備（初回1回だけ）</h3>
+  <p class="lead">1対1のフレンドVSを、OBSから直接始めます。相手は17LIVEアプリ/配信画面で招待を受容するだけでOK。<b>4人VSは未対応です（1対1のみ）</b>。映像・音声の送出は仮想カメラ経由です（仮想カメラ不要の直接PUSHは近日対応予定）。</p>
+  <h3>準備（初回1回だけ・Windows）</h3>
   <ol>
-    <li>VS送信用プログラム <b>livit17-pushd</b> はインストール時に同梱されます。<b>通常は「招待してPUSH」の操作だけで自動的に起動するので、手動操作は不要です。</b>（手動で起動する場合: <code>livit17-pushd.exe --secret livit-local</code>）<br>
-        <small>実行コマンド: <code>livit17-pushd.exe --secret livit-local</code>（ダウンロードリンクはGitHubの livit17-pushd Releases にv0.1.4公開と合わせて掲載します）</small></li>
+    <li>OBSの「ツール」→「仮想カメラ」が開けることを確認します（PUSHの送信元として使われます。設定は不要で、開ければOKです）。</li>
+    <li>17LIVE側のカメラ選択で「OBS Virtual Camera」を選ぶ準備をします（実際に選ぶのは招待を受けたときです）。</li>
   </ol>
   <h3>VSを始める</h3>
   <ol>
     <li>OBSの「17LIVE VS」Dockで <b>17LIVE IDとパスワード</b> を入力し「VSログイン」を押します（入力はこのPC内で完結し、配信基盤への認証にのみ使われます）。</li>
     <li>誘う友だちの <b>userID</b> を入力し「招待してPUSH」を押します。<b>相手の配信中である必要はありません</b>（友だち同士の1対1VSとして開始されます）。</li>
     <li>相手に招待が届くので、<b>相手が17LIVE側で受容</b>します。</li>
-    <li>受容されると自動で映像・音声のPUSHが始まり、Dockに「VS: PUSH稼働中」と表示されます。プレビューに映っているものがそのまま相手に見えています。</li>
+    <li>受容されると「VS接続OK」が表示されます。<b>そのまま仮想カメラPUSHが始動します</b>（下の3章どおりに「仮想カメラを開始」→17LIVE側で「OBS Virtual Camera」選択）。Dockプレビューに映っているものがそのまま相手に見えます。</li>
     <li>終了は「VS停止」を押します（黒い窓は次回そのまま使えます）。</li>
   </ol>
   <div class="note"><b class="t">📝 相手の見つけ方</b>相手のプロフィールURL末尾の英数字列がuserIDです。招待が通らない場合は、相手と相互フォロー関係にあるか確認してください（フレンドVSは友だち限定です）。</div>
