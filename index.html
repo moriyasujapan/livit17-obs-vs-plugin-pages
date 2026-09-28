@@ -137,7 +137,7 @@
       <li>メニュー「表示」→「ドック」→「17LIVE VS」でDockが表示されることを確認します。</li>
     </ol>
     <pre>アンインストール: Windows設定 → アプリ → livit17-obs-vs-plugin → アンインストール
-手動導入派はZIP版の install.bat でも導入できます（導入先: %APPDATA%\obs-studio\plugins\）</pre>
+手動導入派は <code>…-win64.zip</code> の install.bat でも導入できます（導入先: %APPDATA%\obs-studio\plugins\）</pre>
   </div>
   <div class="tabbody" id="tab-linux">
     <ol class="steps">
@@ -148,13 +148,13 @@
 # 「依存関係が足りません」と出たら: sudo apt -f install</pre></li>
       <li>OBSを起動 → プラグイン検出の案内 → <b>もう一度OBSを再起動</b> → メニュー「表示」→「ドック」→「17LIVE VS」でDockを表示します。</li>
     </ol>
-    <pre>手動導入派はZIP版: linux/ ディレクトリで sh install.sh（sudo不要・~/.config/obs-studio/plugins/へ）
+    <pre>手動導入派は <code>…-linux-amd64.zip</code> の linux/ ディレクトリで sh install.sh（sudo不要・~/.config/obs-studio/plugins/へ）
 アンインストール: sudo apt remove livit17-obs-vs-plugin</pre>
   </div>
   <div class="tabbody" id="tab-mac">
     <ol class="steps">
       <li>OBS Studioを<b>終了</b>します。</li>
-      <li>Releasesページの ZIP（<code>livit17-obs-vs-plugin-x.x.x.zip</code>）をダウンロードして解凍します。</li>
+      <li>Releasesページの <code>…-macos.zip</code> をダウンロードして解凍します。</li>
       <li>ターミナルで <code>macos/</code> ディレクトリに入り <code>sh install.sh</code> を実行（Gatekeeperのダイアログは出ません）:
       <pre>cd Downloads/livit17-obs-vs-plugin-*/macos
 sh install.sh</pre></li>
