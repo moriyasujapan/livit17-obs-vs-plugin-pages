@@ -187,7 +187,7 @@ Apple Silicon（M1〜M4）対応。</pre>
     <li>終了は「VS停止」を押します（黒い窓は次回そのまま使えます）。</li>
   </ol>
   <div class="note"><b class="t">📝 相手の見つけ方</b>相手のプロフィールURL末尾の英数字列がuserIDです。招待が通らない場合は、相手と相互フォロー関係にあるか確認してください（フレンドVSは友だち限定です）。</div>
-  <div class="note warn"><b class="t">⚠ 4人VSについて</b>4人VS（マルチPK）はこのプラグインでは<b>開始できません</b>。4人VSには対応予定がありません。1対1のフレンドVS専用としてお使いください。</div>
+  <div class="note warn"><b class="t">⚠ 4人VSについて</b>4人VSはこのプラグインでは<b>開始できません</b>。4人VSには対応予定がありません。1対1のフレンドVS専用としてお使いください。</div>
 </section>
 
 <section id="push">
@@ -237,7 +237,7 @@ sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library
     <tr><th>症状</th><th>対処</th></tr>
     <tr><td>「セッション: 未取得」と出る</td><td>公式17LIVEプラグインでログインしてください。OBSを一度終了→再起動すると認識します。</td></tr>
     <tr><td>「仮想カメラシステムプロセスが見つかりませんでした」（macOS）</td><td>上記PUSH節の<b>ターミナル2行</b>を実行し、ログアウト→ログイン（または再起動）してください。OBSのドラッグインストールでたまに起きます。</td></tr>
-    <tr><td>相手に映像が伝わらない</td><td>VS/PK側のカメラ選択がWebcamのままです。<b>「OBS Virtual Camera」</b>を選び、Dock（またはコントロール）で<b>仮想カメラを開始</b>してください。</td></tr>
+    <tr><td>相手に映像が伝わらない</td><td>相手のブラウザ側のカメラ選択がWebcamのままです。<b>「OBS Virtual Camera」</b>を選び、Dock（またはコントロール）で<b>仮想カメラを開始</b>してください。</td></tr>
     <tr><td>Dockが見当たらない</td><td>OBSメニュー「表示」→「ドック」→「17LIVE VS」にチェックを付けてください（v0.1.1〜）。</td></tr>
     <tr><td>Dockが消えて戻らない</td><td>OBSを終了し、設定ファイルの <code>DockState=</code> 行を削除してから起動すると復帰します（Windows: <code>%APPDATA%\obs-studio\user.ini</code>、macOS: <code>~/Library/Application Support/obs-studio/user.ini</code>、Linux: <code>~/.config/obs-studio/user.ini</code>）。</td></tr>
     <tr><td>VSに誘いたい</td><td>Dockの「VSログイン」→相手userID→「招待してPUSH」でOBSから誘えます（2章）。17LIVEアプリ側から誘う既存運用もそのまま使えます。4人VSには未対応です。</td></tr>
