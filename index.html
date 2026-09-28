@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>livit17-obs-vs-plugin マニュアル | 17LIVE VS対応OBSプラグイン</title>
-<meta name="description" content="17LIVE VSを楽にするOBSプラグイン。公式プラグインのログインを共有し、VS招待の受諾制御・ポップアップ・リスナー视角プレビューを提供します。">
+<meta name="description" content="17LIVEの1対1VSを楽にするOBSプラグイン。公式プラグインのログインを共有し、配信中の映像・音声をそのままVS相手へPUSH。リスナー视角の確認もできます。">
 <style>
   :root{
     --bg:#0b0d12; --panel:#141824; --panel2:#1b2030; --line:#262c40;
@@ -85,7 +85,7 @@
 <nav>
   <div class="logo">livit17<b>VS</b> for OBS</div>
   <div class="links">
-    <a href="#install">インストール</a><a href="#focus">Focus</a><a href="#invite">招待ポップアップ</a>
+    <a href="#install">インストール</a><a href="#push">PUSH</a>
     <a href="#preview">プレビュー</a><a href="#audio">音声</a><a href="#trouble">よくある質問</a>
   </div>
   <a class="ghbtn" href="https://github.com/moriyasujapan/livit17-obs-vs-plugin">GitHub ↗</a>
@@ -94,8 +94,9 @@
 <header>
   <div class="badge">v0.1.3 開発プレビュー ・ <b>3OSビルド済み</b>（macOS実機動作確認✓）</div>
   <h1>VSは、<span>OBSの中で</span>決める。</h1>
-  <p class="sub">17LIVE公式OBSプラグインのログインをそのまま共有。VS招待をあなたの環境で受け取り、
-  受ける／受けないを自分でコントロール。配信環境はそのままで、リスナーに見えている画面も確認できます。</p>
+  <p class="sub">17LIVE公式OBSプラグインのログインをそのまま共有。友だちを1対1のVSへ誘って、
+  配信中そのものの映像・音声をOBSから相手に送信。リスナーに見えている画面も確認できます。</p>
+  <p class="sub" style="margin-top:-6px"><b>対応: 1対1のフレンドVSのみ</b>（4人VSは未対応。VSを始める・誘う操作は17LIVEアプリ側で行います。プラグインからの招待送信は次のアップデートで対応予定）</p>
   <div class="ctas">
     <a class="btn p" href="https://github.com/moriyasujapan/livit17-obs-vs-plugin/releases">ダウンロード</a>
     <a class="btn s" href="#install">インストール方法</a>
@@ -110,8 +111,8 @@
   <p class="lead">既存の17LIVE配信環境（サーバー送出）に追加で入れる、VS支援だけの特化プラグインです。</p>
   <div class="grid">
     <div class="card"><span class="ico">🔑</span><h3>ログイン共有</h3><p>公式17LIVEプラグインで一度ログインしていればOK。このプラグインで再ログインは不要です。</p></div>
-    <div class="card"><span class="ico">🎯</span><h3>Focusモード</h3><p>ONにするとVS招待を受けない状態に。放送に集中したいとき一键で切り替え。</p></div>
-    <div class="card"><span class="ico">📥</span><h3>招待ポップアップ</h3><p>VS招待が届くとOBS内に相手名・期限付きの受諾/拒否ダイアログが表示されます。</p></div>
+    <div class="card"><span class="ico">🎯</span><h3>1対1フレンドVS専用</h3><p>友だちを1対1でVSに誘う使い方に対応。4人VSは未対応です。</p></div>
+    <div class="card"><span class="ico">📤</span><h3>誘う主導線</h3><p>VSへ誘うのは17LIVEアプリから（プラグインからの招待送信は次のアップデートで対応予定）。受け取ったらOBSのままPUSHできます。</p></div>
     <div class="card"><span class="ico">📺</span><h3>リスナー视角プレビュー</h3><p>視聴者に見えているVS合成画面をそのまま確認。画面が逆でも即気づけます。</p></div>
     <div class="card"><span class="ico">🎧</span><h3>相手の音声（任意）</h3><p>イヤホンでのみ聞けるMonitor-Onlyルート。配信音には絶対に乗りません。</p></div>
     <div class="card"><span class="ico">📡</span><h3>VSへ映像/音声PUSH</h3><p>Dockのワンクリックで仮想カメラ開始。配信中そのものの映像・音声をVS相手に無劣化で送信します。</p></div>
@@ -168,18 +169,9 @@ Apple Silicon（M1〜M4）対応。</pre>
   <div class="note ok"><b class="t">✅ 正常に入ると</b>Dock上部に「セッション: OK（OpenID / room 部屋番号）」と表示されます。ここに「未取得」と出たら次項を確認してください。</div>
 </section>
 
-<section id="focus">
-  <h2><span class="no">2</span>Focusモード（招待を受ける/受けない）</h2>
-  <p class="lead">ライバーさんの意思でVS参加のON/OFFを決められます。</p>
-  <div class="card">
-    <p>「<b>Focus（招待を受けない）</b>」チェック = <b>ON：招待が来ても自動でスキップ</b>（放送に集中）<br>
-    チェック = <b>OFF：招待が来たらポップアップでお知らせ</b> → 受諾/拒否を自分で選べます</p>
-  </div>
-  <div class="note warn"><b class="t">⚠ 開発プレビュー版では</b>現在のv0.1.3はUIプレビュー段階です。受諾ボタンはAPI接続済みではありません（M2で実APIに接続予定）。</div>
-</section>
 
-<section id="invite">
-  <h2 id="push"><span class="no">3</span>OBSの映像・音声をVSへそのままPUSH</h2>
+<section id="push">
+  <h2><span class="no">2</span>OBSの映像・音声をVSへそのままPUSH</h2>
   <div class="card">
     <p>VSの相手へ<strong>今OBSで配信している映像と音そのもの</strong>を送ります。カメラで撮り直すのとは違い、配信用の映像を<strong>無劣化でそのまま複製</strong>する仕組みなので、<strong>相手が見る映像＝リスナーが見ている映像</strong>が保証されます。</p>
     <ol>
@@ -195,22 +187,16 @@ sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library
     <div class="note warn"><b class="t">🎧 ハウリング注意</b>相手の声はイヤホンでのみ聞いてください。スピーカーで再生すると声がマイク経由で相手にループします。</div>
   </div>
 
-  <h2><span class="no">4</span>招待ポップアップ</h2>
-  <figure>
-    <img src="assets/obs-dock-linux.png" alt="OBS内の17LIVE VS Dock（セッション表示・Focus切替・プレビュー枠・音声切替）">
-    <figcaption>OBS右側に設置される「17LIVE VS」Dock（Linux版の実画面。Windows版も同一UI）</figcaption>
-  </figure>
-  <p>招待が届くと、招待元の名前と残り時間を示すモーダルが表示されます。既定で「拒否」、受諾ボタンのみで承諾します（誤爆防止）。</p>
 </section>
 
 <section id="preview">
-  <h2><span class="no">5</span>リスナー视角プレビュー</h2>
+  <h2><span class="no">3</span>リスナー视角プレビュー</h2>
   <p class="lead">「視聴者に実際に見えているVS画面」をDock内に映します。左右反転・画面落ちの即検知用です。</p>
   <div class="note"><b class="t">📌 M2実装項目</b>配信開始時にサーバー送出先（視聴者URL）をデコードして表示します。プラグイン側の処理は軽い（デコードのみ）ため配信負荷はほぼ変わりません。</div>
 </section>
 
 <section id="audio">
-  <h2><span class="no">6</span>相手の音声を聞く（イヤホン必須）</h2>
+  <h2><span class="no">4</span>相手の音声を聞く（イヤホン必須）</h2>
   <div class="note danger"><b class="t">🎧 配信中にスピーカーで聞かないで！</b>相手の音声をスピーカーで流すと配信にエコー（ハウリング）として乗ってしまいます。</div>
   <p>プラグインの音声ルートは「<b>Monitor Only（モニターのみ）</b>」設計です。これは：</p>
   <div class="card" style="margin:14px 0">
@@ -221,7 +207,7 @@ sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library
 </section>
 
 <section id="trouble">
-  <h2><span class="no">7</span>よくある質問・トラブル</h2>
+  <h2><span class="no">5</span>よくある質問・トラブル</h2>
   <table>
     <tr><th>症状</th><th>対処</th></tr>
     <tr><td>「セッション: 未取得」と出る</td><td>公式17LIVEプラグインでログインしてください。OBSを一度終了→再起動すると認識します。</td></tr>
@@ -229,7 +215,7 @@ sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library
     <tr><td>相手に映像が伝わらない</td><td>VS/PK側のカメラ選択がWebcamのままです。<b>「OBS Virtual Camera」</b>を選び、Dock（またはコントロール）で<b>仮想カメラを開始</b>してください。</td></tr>
     <tr><td>Dockが見当たらない</td><td>OBSメニュー「表示」→「ドック」→「17LIVE VS」にチェックを付けてください（v0.1.1〜）。</td></tr>
     <tr><td>Dockが消えて戻らない</td><td>OBSを終了し、設定ファイルの <code>DockState=</code> 行を削除してから起動すると復帰します（Windows: <code>%APPDATA%\obs-studio\user.ini</code>、macOS: <code>~/Library/Application Support/obs-studio/user.ini</code>、Linux: <code>~/.config/obs-studio/user.ini</code>）。</td></tr>
-    <tr><td>招待ポップアップが出ない</td><td>FocusがONになっていませんか？OFFにしてください。公式側で招待を受け付けない設定の場合もあります。</td></tr>
+    <tr><td>VSに誘いたい</td><td>17LIVEアプリのVS画面から友だちを誘ってください（4人VSには未対応）。誘った後は本プラグインのPUSHで映像・音声を送れます。</td></tr>
     <tr><td>ハウリングする</td><td>イヤホン利用に切り替えてください。音声切替は既定OFFです。</td></tr>
     <tr><td>OBS起動時にエラー</td><td>OBSのバージョンを<b>32以上</b>へ更新してください（v0.1.3はOBS 32対応）。公式プラグイン版との競合は今のところ確認されていません（同居動作確認済）。</td></tr>
   </table>
