@@ -92,7 +92,7 @@
 </nav>
 
 <header>
-  <div class="badge">v0.1.3 開発プレビュー ・ <b>3OSビルド済み</b>（macOS実機動作確認✓）</div>
+  <div class="badge">v0.1.5 開発プレビュー ・ <b>3OSビルド済み</b>（友だち一覧から招待・自動PUSH）</div>
   <h1>VSは、<span>OBSの中で</span>決める。</h1>
   <p class="sub">17LIVE公式OBSプラグインのログインをそのまま共有。友だちを1対1のVSへ誘って、
   配信中そのものの映像・音声をOBSから相手に送信。リスナーに見えている画面も確認できます。</p>
@@ -112,10 +112,10 @@
   <div class="grid">
     <div class="card"><span class="ico">🔑</span><h3>ログイン共有</h3><p>公式17LIVEプラグインで一度ログインしていればOK。このプラグインで再ログインは不要です。</p></div>
     <div class="card"><span class="ico">🎯</span><h3>1対1フレンドVS専用</h3><p>友だちを1対1でVSに誘う使い方に対応。4人VSは未対応です。</p></div>
-    <div class="card"><span class="ico">📤</span><h3>誘う主導線</h3><p>Dockで17LIVEにログインし、友だちのuserIDを入力して「招待してPUSH」。相手が受容すると、OBSの映像・音声がそのまま自動でVSに流れ始めます。</p></div>
+    <div class="card"><span class="ico">📤</span><h3>誘う主導線</h3><p>Dockで17LIVEにログインし、「👥 友だちを読む」で招待できる友だち一覧を表示、選んで「招待してPUSH」。相手が受容すると、OBSの映像・音声がそのまま自動でVSに流れ始めます。</p></div>
     <div class="card"><span class="ico">📺</span><h3>リスナー视角プレビュー</h3><p>視聴者に見えているVS合成画面をそのまま確認。画面が逆でも即気づけます。</p></div>
     <div class="card"><span class="ico">🎧</span><h3>相手の音声（任意）</h3><p>イヤホンでのみ聞けるMonitor-Onlyルート。配信音には絶対に乗りません。</p></div>
-    <div class="card"><span class="ico">📡</span><h3>VSへ映像/音声PUSH</h3><p>Dockのワンクリックで仮想カメラ開始。配信中そのものの映像・音声をVS相手に無劣化で送信します。</p></div>
+    <div class="card"><span class="ico">📡</span><h3>VSへ映像/音声PUSH</h3><p>招待が受容されると直後から、映像・音声が自動で直接VSへPUSHされます。OBSとは独立した送信程序のため、既存の配信中でも安全に共存します（仮想カメラ代替も対応）。</p></div>
     <div class="card"><span class="ico">🪟</span><h3>シーン切り替え不要</h3><p>VS中の画面演出は既存のOBS/サーバー合成が担当。プラグインは操作と確認だけ。</p></div>
   </div>
 </section>
@@ -172,21 +172,21 @@ Apple Silicon（M1〜M4）対応。</pre>
 
 <section id="invite">
   <h2><span class="no">2</span>友だちを誘ってVS開始（ダイレクトPUSH・推奨）</h2>
-  <p class="lead">1対1のフレンドVSを、OBSから直接始めます。相手は17LIVEアプリ/配信画面で招待を受容するだけでOK。<b>4人VSは未対応です（1対1のみ）</b>。映像・音声の送出は仮想カメラ経由です（仮想カメラ不要の直接PUSHは近日対応予定）。</p>
+  <p class="lead">1対1のフレンドVSを、OBSから直接始めます。相手は17LIVEアプリ/配信画面で招待を受容するだけでOK。<b>4人VSは未対応です（1対1のみ）</b>。受容後は映像・音声が<b>自動で直接PUSH</b>されます（OBSとは別の送信程序が裏で動くため、既存の配信や音声に影響しません。仮想カメラ経由の代替手段もあります＝3章）。</p>
   <h3>準備（初回1回だけ・Windows）</h3>
   <ol>
-    <li>OBSの「ツール」→「仮想カメラ」が開けることを確認します（PUSHの送信元として使われます。設定は不要で、開ければOKです）。</li>
-    <li>17LIVE側のカメラ選択で「OBS Virtual Camera」を選ぶ準備をします（実際に選ぶのは招待を受けたときです）。</li>
+    <li>特になし（v0.1.5から受容後は自動で直接PUSHされます）。仮想カメラ経由をお使いになる場合だけ、OBSの「ツール」→「仮想カメラ」が開け、17LIVE側で「OBS Virtual Camera」を選べることを確認してください（3章の代替手順）。</li>
   </ol>
   <h3>VSを始める</h3>
   <ol>
     <li>OBSの「17LIVE VS」Dockで <b>17LIVE IDとパスワード</b> を入力し「VSログイン」を押します（入力はこのPC内で完結し、配信基盤への認証にのみ使われます）。</li>
-    <li>誘う友だちの <b>userID</b> を入力し「招待してPUSH」を押します。<b>相手の配信中である必要はありません</b>（友だち同士の1対1VSとして開始されます）。</li>
+    <li>「👥 友だちを読む」を押すと、<b>VSに招待できる友だち一覧</b>が表示されます（● LIVEマークは現在配信中の相手です）。選ぶと招待先が入るので「招待してPUSH」を押します。<b>招待する側・される側ともに17LIVEの配信中である必要があります</b>（公式17LIVEプラグインなどで配信を開始してから招待してください）。手動でuserIDを入力することもできます。</li>
     <li>相手に招待が届くので、<b>相手が17LIVE側で受容</b>します。</li>
-    <li>受容されると「VS接続OK」が表示されます。<b>そのまま仮想カメラPUSHが始動します</b>（下の3章どおりに「仮想カメラを開始」→17LIVE側で「OBS Virtual Camera」選択）。Dockプレビューに映っているものがそのまま相手に見えます。</li>
+    <li>受容されると「VS: PUSH稼働中」が表示され、<b>映像・音声が自動でVSに流れ始めます</b>（直接PUSH）。Dockプレビューに映っているものがそのまま相手に見えます。仮想カメラをお使いの場合は3章の代替手順も使えます。</li>
     <li>終了は「VS停止」を押します（黒い窓は次回そのまま使えます）。</li>
   </ol>
-  <div class="note"><b class="t">📝 相手の見つけ方</b>相手のプロフィールURL末尾の英数字列がuserIDです。招待が通らない場合は、相手と相互フォロー関係にあるか確認してください（フレンドVSは友だち限定です）。</div>
+  <div class="note warn"><b class="t">⚠ VS開始の前提</b>招待の送信元・送信先ともに<b>17LIVEの配信中</b>である必要があります（配信中でないとVSロビーの作成や招待の受付がサーバー側で拒否されます）。公式プラグインで配信を開始してからVSを始めてください。</div>
+  <div class="note"><b class="t">📝 友だち一覧に出ない場合</b>フレンドVSは17LIVE上で友だち（相互フォロー）関係にある相手のみ招待できます。一覧に出ない相手は、まずアプリで相互フォローになってから再読みしてください。手動入力の必要がある場合、相手のプロフィールURL末尾の英数字列がuserIDです。</div>
   <div class="note warn"><b class="t">⚠ 4人VSについて</b>4人VSはこのプラグインでは<b>開始できません</b>。4人VSには対応予定がありません。1対1のフレンドVS専用としてお使いください。</div>
 </section>
 
@@ -240,7 +240,7 @@ sudo cp -R /Applications/OBS.app/Contents/PlugIns/mac-virtualcam.plugin /Library
     <tr><td>相手に映像が伝わらない</td><td>相手のブラウザ側のカメラ選択がWebcamのままです。<b>「OBS Virtual Camera」</b>を選び、Dock（またはコントロール）で<b>仮想カメラを開始</b>してください。</td></tr>
     <tr><td>Dockが見当たらない</td><td>OBSメニュー「表示」→「ドック」→「17LIVE VS」にチェックを付けてください（v0.1.1〜）。</td></tr>
     <tr><td>Dockが消えて戻らない</td><td>OBSを終了し、設定ファイルの <code>DockState=</code> 行を削除してから起動すると復帰します（Windows: <code>%APPDATA%\obs-studio\user.ini</code>、macOS: <code>~/Library/Application Support/obs-studio/user.ini</code>、Linux: <code>~/.config/obs-studio/user.ini</code>）。</td></tr>
-    <tr><td>VSに誘いたい</td><td>Dockの「VSログイン」→相手userID→「招待してPUSH」でOBSから誘えます（2章）。17LIVEアプリ側から誘う既存運用もそのまま使えます。4人VSには未対応です。</td></tr>
+    <tr><td>VSに誘いたい</td><td>Dockの「VSログイン」→「👥 友だちを読む」→相手を選択→「招待してPUSH」でOBSから誘えます（2章）。17LIVEアプリ側から誘う既存運用もそのまま使えます。4人VSには未対応です。</td></tr>
     <tr><td>「招待してPUSH」が失敗する</td><td>①黒い窓（livit17-pushd）が起動しているか②VSログインし直しか③相手と相互フォローかを確認してください。相手が招待を受容しないと30秒ほどでタイムアウトになります。</td></tr>
     <tr><td>ハウリングする</td><td>イヤホン利用に切り替えてください。音声切替は既定OFFです。</td></tr>
     <tr><td>OBS起動時にエラー</td><td>OBSのバージョンを<b>32以上</b>へ更新してください（v0.1.3はOBS 32対応）。公式プラグイン版との競合は今のところ確認されていません（同居動作確認済）。</td></tr>
